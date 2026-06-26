@@ -5,10 +5,10 @@ HeptaCdh cdh;
 HeptaEps eps;
 UvGuvaS12sd uv;
 
-// true: MCP3208 channel 7, false: MCU GP28 (ADC2)
+// true: MCP3208 channel 6, false: MCU GP28 (ADC2)
 constexpr bool kUseMcp3208 = true;
 constexpr uint8_t kMcp3208CsPin = 17;
-constexpr uint8_t kMcp3208Channel = 7;
+constexpr uint8_t kMcp3208Channel = 6;
 constexpr uint8_t kDirectAdcPin = 28;
 
 void setup() {
@@ -24,7 +24,7 @@ void setup() {
   }
 
   if (kUseMcp3208) {
-    cdh.println("GUVA-S12SD ready (MCP3208 ch7)");
+    cdh.printf("GUVA-S12SD ready (MCP3208 ch%u)\r\n", kMcp3208Channel);
   } else {
     cdh.println("GUVA-S12SD ready (GP28)");
   }
