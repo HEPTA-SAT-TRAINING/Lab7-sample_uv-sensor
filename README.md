@@ -32,6 +32,8 @@ Set `kUserChannel` in the sketch to match the board USER pin:
 | VCC | 3.3 V payload (`eps.switch_3V3_on()`) |
 | GND | GND |
 
+<img width="612" height="384" alt="image" src="https://github.com/user-attachments/assets/cc8cc30c-7a50-4778-9362-050f64b6bf44" />
+
 ## Build and Upload
 
 1. Open `Lab7-sample_uv-sensor.ino` in the Arduino IDE
