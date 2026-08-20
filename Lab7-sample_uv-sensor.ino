@@ -5,29 +5,36 @@ HeptaCdh cdh;
 HeptaEps eps;
 UvGuvaS12sd uv;
 
-// true: MCP3208 channel 5 (USER1, V4.1.1), false: MCU GP28 (ADC2)
-constexpr bool kUseMcp3208 = false;
+// V4.1.1 payload ADC: USER1 / USER2 / USER3 -> MCP3208 CH5 / CH6 / CH7
+constexpr uint8_t kUserChannel = 1;  // set to 1, 2, or 3
 constexpr uint8_t kMcp3208CsPin = 17;
-constexpr uint8_t kMcp3208Channel = 5;
-constexpr uint8_t kDirectAdcPin = 28;
+
+constexpr uint8_t mcp_channel_from_user(uint8_t user) {
+  return static_cast<uint8_t>(4 + user);
+}
 
 void setup() {
   cdh.begin();
   eps.init();
   eps.switch_3V3_on();
 
-  if (!uv.begin(kUseMcp3208, kDirectAdcPin, kMcp3208Channel, kMcp3208CsPin)) {
+  if (kUserChannel < 1 || kUserChannel > 3) {
+    cdh.println("kUserChannel must be 1, 2, or 3");
+    while (true) {
+      delay(1000);
+    }
+  }
+
+  const uint8_t mcp_channel = mcp_channel_from_user(kUserChannel);
+  if (!uv.begin(kMcp3208CsPin, mcp_channel)) {
     cdh.println("UV sensor init failed");
     while (true) {
       delay(1000);
     }
   }
 
-  if (kUseMcp3208) {
-    cdh.printf("GUVA-S12SD ready (MCP3208 ch%u)\r\n", kMcp3208Channel);
-  } else {
-    cdh.println("GUVA-S12SD ready (GP28)");
-  }
+  cdh.printf("GUVA-S12SD ready (USER%u / MCP3208 ch%u)\r\n", kUserChannel,
+             mcp_channel);
 }
 
 void loop() {

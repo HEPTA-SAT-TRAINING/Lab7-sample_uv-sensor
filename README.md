@@ -8,7 +8,7 @@ HEPTA-SAT training sample: **Grove UV Sensor** (**GUVA-S12SD**).
 |------|-------|
 | Module | **Seeed Grove UV Sensor** |
 | Sensor element | **GUVA-S12SD** (UV photodiode) |
-| Interface | Analog output → **MCP3208 channel 5 (USER1, V4.1.1)** or **MCU GP28** |
+| Interface | Analog output → **MCP3208 USER1 / USER2 / USER3** (V4.1.1) |
 | Supply | 3.3 V |
 | Wavelength sensitivity | approx. 240 to 370 nm (module spec) |
 | Conversion | Illuminance [mW/m²] = `307.0 × voltage [V]` |
@@ -16,19 +16,19 @@ HEPTA-SAT training sample: **Grove UV Sensor** (**GUVA-S12SD**).
 
 ## Analog Input Selection
 
-Set `kUseMcp3208` in the sketch:
+Set `kUserChannel` in the sketch to match the board USER pin:
 
-| `kUseMcp3208` | Connection |
-|---------------|------------|
-| `true` | **MCP3208 channel 5 (USER1, V4.1.1)** (CS = GP17) |
-| `false` | **MCU GP28** (ADC2) |
+| `kUserChannel` | Board pin | MCP3208 |
+|----------------|-----------|---------|
+| `1` | **USER1** | CH5 |
+| `2` | **USER2** | CH6 |
+| `3` | **USER3** | CH7 |
 
-## Wiring (HEPTA-SAT)
+## Wiring (HEPTA-SAT V4.1.1)
 
 | Sensor | HEPTA-SAT |
 |--------|-----------|
-| Analog output | MCP3208 ch5 **or** GP28 (see above) |
-| MCP3208 CS | GP17 (when using MCP3208) |
+| Analog output | USER1 / USER2 / USER3 (see `kUserChannel`) |
 | VCC | 3.3 V payload (`eps.switch_3V3_on()`) |
 | GND | GND |
 
@@ -37,14 +37,14 @@ Set `kUseMcp3208` in the sketch:
 1. Open `Lab7-sample_uv-sensor.ino` in the Arduino IDE
 2. Board: **Raspberry Pi Pico**
 3. Check out the `src/` submodule (`git submodule update --init`)
-4. Set `kUseMcp3208` to match your wiring
+4. Set `kUserChannel` to match your wiring (`1`, `2`, or `3`)
 5. Compile and upload
 6. Serial monitor at **9600 baud**
 
 ## Example Serial Output
 
 ```
-GUVA-S12SD ready (MCP3208 ch5)
+GUVA-S12SD ready (USER1 / MCP3208 ch5)
 Voltage: 0.206 [V]
 UV illumination: 63.2 [mW/m2]
 UV index: 0.32
